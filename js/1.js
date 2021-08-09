@@ -1,9 +1,4 @@
-const UtilityObject = {
-
-    constructor: function ()
-    {
-        return this;
-    },
+const utilityObject = {
 
     // Возвращает новый объект из модифицированных полей текущего объекта
     // Принимает на вход callback функцию с параметрами (key, value) и возвращающую массив [key, value]
@@ -22,24 +17,38 @@ const UtilityObject = {
     }
 }
 
-const Properties = Object.create(UtilityObject);
-Properties.constructor = function(name, age, height, is_male)
-{
-    UtilityObject.constructor.apply(this, arguments);
-    this.name = name;
-    this.age = age;
-    this.height = height;
-    this.is_male = is_male;
-    return this;
+// Создание наследника через свойство __proto__
+const properties = {
+    name: "Иван",
+    age: 20,
+    height: 180.5,
+    is_male: true,
+    __proto__: utilityObject
 }
 
-const properties = Object.create(Properties).constructor("Иван", 20, 180.5, true);
+// Создание наследника через Object.create и его второй аргумент properties
+properties2 = Object.create(utilityObject, {
+    name: {value: "Маша", enumerable: true},
+    age: {value: 18, enumerable: true,},
+    height: {value: 165, enumerable: true,},
+    is_male: {value: false, enumerable: true,},
+})
 
-console.assert(UtilityObject.isPrototypeOf(properties), "Объект не является наследником класса UtilityObject");
+console.assert(utilityObject.isPrototypeOf(properties), "Объект properties не является наследником класса UtilityObject");
+console.assert(utilityObject.isPrototypeOf(properties2), "Объект properties2 не является наследником класса UtilityObject");
 
 let new_object = properties.map((key, value) => {
     return [key.toUpperCase(), value.toString()]
 })
 
+let new_object2 = properties2.map((key, value) => {
+    return [key.toUpperCase(), value.toString()]
+})
+
+console.log(utilityObject)
+
 console.log(properties)
+console.log(properties2)
+
 console.log(new_object)
+console.log(new_object2)
